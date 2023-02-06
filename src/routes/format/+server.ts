@@ -66,6 +66,7 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
                 course.name,
                 ...event.summary.split("/").splice(1),
               ].join(" / "),
+              location: event.location.replace("_", " "),
             };
         }
         return event;
@@ -92,6 +93,8 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
     setHeaders({
       "Content-Type": "text/calendar",
     });
+
+    console.log(events);
 
     return new Response(ics);
   } catch (err) {
