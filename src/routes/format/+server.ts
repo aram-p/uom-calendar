@@ -1,5 +1,5 @@
-import { async as ical } from "node-ical";
-import { error, json } from "@sveltejs/kit";
+import node_ical from "node-ical";
+import { error } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 import { createEvents } from "ics";
 import type { EventAttributes, DateArray } from "ics";
@@ -35,21 +35,24 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 
     if (!ical_url) throw error(400, "No iCal URL provided");
 
-    const events = Object.values(await ical.fromURL(ical_url)).map((event) => {
-      if (event.type === "VEVENT") {
-        const subject = subjects.find(
-          (s) => s.code === event.summary.split("/")[0].trim()
-        );
-        if (subject)
-          return {
-            ...event,
-            summary: [subject.name, ...event.summary.split("/").splice(1)].join(
-              " / "
-            ),
-          };
+    const events = Object.values(await node_ical.async.fromURL(ical_url)).map(
+      (event) => {
+        if (event.type === "VEVENT") {
+          const subject = subjects.find(
+            (s) => s.code === event.summary.split("/")[0].trim()
+          );
+          if (subject)
+            return {
+              ...event,
+              summary: [
+                subject.name,
+                ...event.summary.split("/").splice(1),
+              ].join(" / "),
+            };
+        }
+        return event;
       }
-      return event;
-    });
+    );
 
     const ics_events = events
       .map((event) => {
