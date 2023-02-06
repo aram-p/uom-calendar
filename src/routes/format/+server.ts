@@ -4,7 +4,7 @@ import type { RequestHandler } from "./$types";
 import { createEvents } from "ics";
 import type { EventAttributes, DateArray } from "ics";
 
-const subjects = [
+const courses = [
   { name: "Virtual Common Room", code: "EEEN20000" },
   { name: "Microcontroller Engineering II", code: "EEEN20011" },
   { name: "Engineering Management", code: "EEEN20051" },
@@ -18,6 +18,24 @@ const subjects = [
   { name: "Embedded Systems Project", code: "EEEN21000" },
   { name: "Aspire - Your Future", code: "EEEN29040" },
   { name: "Mathematics 2E1", code: "MATH29681" },
+  { name: "Economic Principles", code: "BMAN10001" },
+  { name: "Marketing Foundations", code: "BMAN10101" },
+  { name: "Financial Decision Making M", code: "BMAN10522M" },
+  { name: "Fundamentals of Financial Reporting", code: "BMAN10621M" },
+  { name: "Fundamentals of Management Accounting M", code: "BMAN10632M" },
+  { name: "Academic and Career Development", code: "BMAN10780" },
+  { name: "Case Studies in Professional Management", code: "BMAN10862" },
+  { name: "Introduction to Work Psychology", code: "BMAN10872" },
+  {
+    name: "Quantitative Methods for Business and Management",
+    code: "BMAN10960",
+  },
+  {
+    name: "Introduction to Management and Organisation Studies",
+    code: "BMAN10970",
+  },
+  { name: "Academic Malpractice Awareness", code: "BMAN11021" },
+  { name: "Health & Safety Induction", code: "BMAN11230" },
 ] as const;
 
 function parseDate(date: Date): DateArray {
@@ -38,14 +56,14 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
     const events = Object.values(await node_ical.async.fromURL(ical_url)).map(
       (event) => {
         if (event.type === "VEVENT") {
-          const subject = subjects.find(
+          const course = courses.find(
             (s) => s.code === event.summary.split("/")[0].trim()
           );
-          if (subject)
+          if (course)
             return {
               ...event,
               summary: [
-                subject.name,
+                course.name,
                 ...event.summary.split("/").splice(1),
               ].join(" / "),
             };
