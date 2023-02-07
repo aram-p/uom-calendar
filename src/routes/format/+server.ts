@@ -59,15 +59,20 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
           const course = courses.find(
             (s) => s.code === event.summary.split("/")[0].trim()
           );
-          if (course)
+          if (course) {
+            const location =
+              typeof event.location === "string"
+                ? event.location.replaceAll(`_`, " ")
+                : event.location;
             return {
               ...event,
               summary: [
                 course.name,
                 ...event.summary.split("/").splice(1),
               ].join(" / "),
-              location: event.location.replace("_", " "),
+              location,
             };
+          }
         }
         return event;
       }
@@ -93,8 +98,6 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
     setHeaders({
       "Content-Type": "text/calendar",
     });
-
-    console.log(events);
 
     return new Response(ics);
   } catch (err) {
