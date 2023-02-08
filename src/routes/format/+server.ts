@@ -63,9 +63,9 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
             const location =
               typeof event.location === "string"
                 ? event.location
-                    .replaceAll(`_`, " ")
-                    .replaceAll(`TH`, `Theatre`)
-                : event.location;
+                : // .replaceAll(`_`, " ")
+                  // .replaceAll(`TH`, `Theatre`)
+                  event.location;
             return {
               ...event,
               summary: [
