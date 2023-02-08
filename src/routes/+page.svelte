@@ -49,7 +49,11 @@
       <hr />
       <div class="add">
         <p>
-          <a href="webcal://{ics.replace(/^https?:\/\//, ``)}">Add Calendar</a>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            href="webcal://{ics.replace(/^https?:\/\//, ``)}">Add Calendar</a
+          >
         </p>
         <divider>or try adding directly to your calendar of choice</divider>
         <div>
