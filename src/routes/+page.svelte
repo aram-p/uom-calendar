@@ -45,11 +45,11 @@
         {/if}
       </button>
     </form>
-    {#if state === "generated"}
+    {#if state === "generated" && ics}
       <hr />
       <div class="add">
         <p>
-          <a href="webcal://{ics}">Add Calendar</a>
+          <a href="webcal://{ics.replace(/^https?:\/\//, ``)}">Add Calendar</a>
         </p>
         <divider>or try adding directly to your calendar of choice</divider>
         <div>
@@ -89,7 +89,9 @@
               /></svg
             ></CalendarIcon
           >
-          <CalendarIcon title="Apple" url="webcal://{ics}"
+          <CalendarIcon
+            title="Apple"
+            url="webcal://{ics.replace(/^https?:\/\//, ``)}"
             ><svg
               xmlns="http://www.w3.org/2000/svg"
               width="0.82em"
