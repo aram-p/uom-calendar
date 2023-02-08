@@ -59,7 +59,10 @@
         <div>
           <CalendarIcon
             title="Google"
-            url="https://calendar.google.com/calendar/u/0/r?cid={ics}"
+            url="https://calendar.google.com/calendar/u/0/r?cid=http://{ics.replace(
+              /^https?:\/\//,
+              ``
+            )}"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
