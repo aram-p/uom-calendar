@@ -3,7 +3,7 @@
   export let title: string;
 </script>
 
-<a class="icon" href={url}>
+<a class="icon" href={url} target="_blank" rel="noreferrer">
   <slot />
   <p>{title}</p>
 </a>

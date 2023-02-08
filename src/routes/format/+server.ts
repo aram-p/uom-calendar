@@ -95,8 +95,11 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 
     const { value: ics } = createEvents(ics_events);
 
+    // solve cors
     setHeaders({
       "Content-Type": "text/calendar",
+      "Content-Disposition": `attachment; filename="calendar.ics"`,
+      "Access-Control-Allow-Origin": "*",
     });
 
     return new Response(ics);
