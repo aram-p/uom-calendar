@@ -47,7 +47,7 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
       }
     );
 
-    const checkInLink = "https://my.manchester.ac.uk/MyCheckIn";
+    const checkInLine = "Check in: https://my.manchester.ac.uk/MyCheckIn\n\n";
 
     const ics_events = events
       .map((event) => {
@@ -57,7 +57,7 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
             start: parseDate(event.start),
             end: parseDate(event.end),
             title: event.summary,
-            description: `${event.description}\n\n${checkInLink}`,
+            description: `${checkInLine}${event.description}`,
             location: event.location,
           };
         return undefined;
