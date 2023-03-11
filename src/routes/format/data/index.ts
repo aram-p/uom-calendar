@@ -1,5 +1,18 @@
+// EEEN30000 _Virtual Common Room 2022-23 Full Year
+// EEEN30033 Individual Project 2022-23 Full Year
+// EEEN30101 Numerical Analysis 2022-23 1st Semester
+// EEEN30111 Data Networking 2022-23 1st Semester
+// EEEN30161 Digital Mobile Communications 2022-23 1st Semester
+// EEEN30171 High Speed Digital and Mixed Signal Design 2022-23 1st Semester
+// EEEN30201 Digital Signal Processing 2022-23 1st Semester
+// EEEN30222 Computer Systems Architecture 2022-23 2nd Semester
+// EEEN30242 Sensors & Instrumentation 2022-23 2nd Semester
+// EEEN30272 Current Trends in Optical Devices 2022-23 2nd Semester
+// MCEL30102 Commercial Technology Development 2022-23 2nd Semester
+
 export const courses = [
   { name: "Virtual Common Room", code: "EEEN20000" },
+  { name: "Virtual Common Room", code: "EEEN30000" },
   { name: "Microcontroller Engineering II", code: "EEEN20011" },
   { name: "Engineering Management", code: "EEEN20051" },
   { name: "Digital Systems Design II", code: "EEEN20121" },
@@ -30,4 +43,18 @@ export const courses = [
   },
   { name: "Academic Malpractice Awareness", code: "BMAN11021" },
   { name: "Health & Safety Induction", code: "BMAN11230" },
+  {
+    name: "Individual Project",
+    code: "EEEN30033",
+  },
+  { name: "Numerical Analysis", code: "EEEN30101" },
+  { name: "Data Networking", code: "EEEN30111" },
+  { name: "Digital Mobile Communications", code: "EEEN30161" },
+  { name: "High Speed Digital and Mixed Signal Design", code: "EEEN30171" },
+  { name: "Digital Signal Processing", code: "EEEN30201" },
+  { name: "Computer Systems Architecture", code: "EEEN30222" },
+  { name: "Sensors & Instrumentation", code: "EEEN30242" },
+  { name: "Current Trends in Optical Devices", code: "EEEN30272" },
+  { name: "Commercial Technology Development", code: "MCEL30102" },
+
 ] as const;
