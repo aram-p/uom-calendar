@@ -45,4 +45,5 @@ export const courses = [
 	{ name: "Current Trends in Optical Devices", code: "EEEN30272" },
 	{ name: "Commercial Technology Development", code: "MCEL30102" },
 	{ name: "Individual Project", code: "EEEN30330" },
+	{ name: "Concurrent Systems", code: "EEEN30141" },
 ] as const;
