@@ -7,74 +7,74 @@ import type { EventAttributes, DateArray } from "ics";
 import { courses } from "./data";
 
 function parseDate(date: Date): DateArray {
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
-  return [year, month, day, hours, minutes];
+	const year = date.getFullYear();
+	const month = date.getMonth() + 1;
+	const day = date.getDate();
+	const hours = date.getHours();
+	const minutes = date.getMinutes();
+	return [year, month, day, hours, minutes];
 }
 
 export const GET: RequestHandler = async ({ url, setHeaders }) => {
-  try {
-    const ical_url = url.searchParams.get("ical");
+	try {
+		const ical_url = url.searchParams.get("ical");
 
-    if (!ical_url) throw error(400, "No iCal URL provided");
+		if (!ical_url) throw error(400, "No iCal URL provided");
 
-    const events = Object.values(await node_ical.async.fromURL(ical_url)).map(
-      (event) => {
-        if (event.type === "VEVENT") {
-          const course = courses.find(
-            (s) => s.code === event.summary.split("/")[0].trim()
-          );
-          if (course) {
-            const location =
-              typeof event.location === "string"
-                ? event.location.replaceAll(`_`, " ")
-                : // .replaceAll(`TH`, `Theatre`)
-                  event.location;
-            return {
-              ...event,
-              summary: [
-                course.name,
-                ...event.summary.split("/").splice(1),
-              ].join(" / "),
-              location,
-            };
-          }
-        }
-        return event;
-      }
-    );
+		const events = Object.values(await node_ical.async.fromURL(ical_url)).map(
+			(event) => {
+				if (event.type === "VEVENT") {
+					const course = courses.find(
+						(s) => s.code === event.summary.split("/")[0].trim()
+					);
+					if (course) {
+						const location =
+							typeof event.location === "string"
+								? event.location.replaceAll(`_`, " ")
+								: // .replaceAll(`TH`, `Theatre`)
+								  event.location;
+						return {
+							...event,
+							summary: [
+								course.name,
+								...event.summary.split("/").splice(1),
+							].join(" / "),
+							location,
+						};
+					}
+				}
+				return event;
+			}
+		);
 
-    const checkInLine = "Check in: https://my.manchester.ac.uk/MyCheckIn\n\n";
+		const checkInLine = "Check-in: https://is.gd/6V1IiF\n\n";
 
-    const ics_events = events
-      .map((event) => {
-        if (event.type === "VEVENT")
-          return {
-            // convert string date to 5 number array
-            start: parseDate(event.start),
-            end: parseDate(event.end),
-            title: event.summary,
-            description: `${checkInLine}${event.description}`,
-            location: event.location,
-          };
-        return undefined;
-      })
-      .filter((event) => event !== undefined) as EventAttributes[];
+		const ics_events = events
+			.map((event) => {
+				if (event.type === "VEVENT")
+					return {
+						// convert string date to 5 number array
+						start: parseDate(event.start),
+						end: parseDate(event.end),
+						title: event.summary,
+						description: `${checkInLine}${event.description}`,
+						location: event.location,
+					};
+				return undefined;
+			})
+			.filter((event) => event !== undefined) as EventAttributes[];
 
-    const { value: ics } = createEvents(ics_events);
+		const { value: ics } = createEvents(ics_events);
 
-    // solve cors
-    setHeaders({
-      "Content-Type": "text/calendar",
-      "Content-Disposition": `attachment; filename="calendar.ics"`,
-      "Access-Control-Allow-Origin": "*",
-    });
+		// solve cors
+		setHeaders({
+			"Content-Type": "text/calendar",
+			"Content-Disposition": `attachment; filename="calendar.ics"`,
+			"Access-Control-Allow-Origin": "*",
+		});
 
-    return new Response(ics);
-  } catch (err) {
-    throw error(500, "Error parsing iCal");
-  }
+		return new Response(ics);
+	} catch (err) {
+		throw error(500, "Error parsing iCal");
+	}
 };
