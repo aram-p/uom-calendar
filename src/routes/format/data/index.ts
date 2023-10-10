@@ -46,4 +46,5 @@ export const courses = [
 	{ name: "Commercial Technology Development", code: "MCEL30102" },
 	{ name: "Individual Project", code: "EEEN30330" },
 	{ name: "Concurrent Systems", code: "EEEN30141" },
+	{ name: "Independent Study", code: "EEEN31001" },
 ] as const;
