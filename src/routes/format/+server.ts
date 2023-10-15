@@ -15,6 +15,16 @@ function parseDate(date: Date): DateArray {
 	return [year, month, day, hours, minutes];
 }
 
+function prettifyTitle(str: string) {
+	return str
+		.replaceAll("LECTURE_2", "Lecture")
+		.replaceAll("LECTURE_SEM1", "Lecture")
+		.replaceAll("LECTURE_SEM2", "Lecture")
+		.replaceAll("LECTURE_ ", "Lecture")
+		.replaceAll("TUTORIAL_", "Tutorial")
+		.replaceAll("SURGERY_ ", "Surgery");
+}
+
 export const GET: RequestHandler = async ({ url, setHeaders }) => {
 	try {
 		const ical_url = url.searchParams.get("ical");
@@ -56,7 +66,7 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 						// convert string date to 5 number array
 						start: parseDate(event.start),
 						end: parseDate(event.end),
-						title: event.summary,
+						title: prettifyTitle(event.summary),
 						description: `${checkInLine}${event.description}`,
 						location: event.location,
 					};
