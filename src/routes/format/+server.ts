@@ -20,9 +20,17 @@ function prettifyTitle(str: string) {
 		.replaceAll("LECTURE_2", "Lecture")
 		.replaceAll("LECTURE_SEM1", "Lecture")
 		.replaceAll("LECTURE_SEM2", "Lecture")
-		.replaceAll("LECTURE_ ", "Lecture")
+		.replaceAll("LECTURE_", "Lecture")
+		.replaceAll("LABORATORY_", "Lab")
+		.replaceAll("LABORATORY2_", "Lab")
+		.replaceAll("ONLINE DROP-IN_", "Online Drop-in")
 		.replaceAll("TUTORIAL_", "Tutorial")
-		.replaceAll("SURGERY_ ", "Surgery");
+		.replaceAll("TutorialSEM1_AA", "Tutorial")
+		.replaceAll("SURGERY_", "Surgery")
+		.replaceAll("DROP-IN_SEM_1Build", "Drop-in")
+		.replaceAll("INDEPENDENT STUDY_SEM1", "Seminar")
+		.replace(" / ", " - ")
+		.split(" / ")[0];
 }
 
 export const GET: RequestHandler = async ({ url, setHeaders }) => {
