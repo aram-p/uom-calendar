@@ -87,7 +87,7 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 						start: parseDate(event.start),
 						end: parseDate(event.end),
 						title: prettifyTitle(event.summary),
-						description: `${event.summary}\n\n${event.description}`,
+						description: `${event.summary}${event.description}`,
 						location: event.location,
 					};
 				return undefined;
