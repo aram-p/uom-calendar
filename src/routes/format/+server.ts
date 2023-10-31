@@ -72,6 +72,7 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 								...event.summary.split("/").splice(1),
 							].join(" / "),
 							location,
+							original_summary: event.summary,
 						};
 					}
 				}
@@ -87,7 +88,7 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 						start: parseDate(event.start),
 						end: parseDate(event.end),
 						title: prettifyTitle(event.summary),
-						description: `${event.summary}${event.description}`,
+						description: `${event.description}\n${event.summary}`,
 						location: event.location,
 					};
 				return undefined;
