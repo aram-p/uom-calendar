@@ -15,28 +15,110 @@ function parseDate(date: Date): DateArray {
 	return [year, month, day, hours, minutes];
 }
 
-function sliceRemoved(input: string, start: string, end: string) {
-	try {
-		const sI = input.indexOf(start);
+// Event type: LECTURE\nLocation: Schuster_RUTHERFORD TH\nDate: Th
+// ursday\, 05 October 2023\nMap link: [Google Maps](https://www.google.com/m
+// aps/search/?api=1&query=53.467269\,-2.230567&query_place_id=ChIJKfZGD8Gxe0
+// gRFFHM_wuWpDI)	\nDirections: The Rutherford Theatre is on the ground floor
+//  of the Schuster Building.	\nStaff Member: Wright\, Paul\, O'Toole\, Micha
+// el	\nUnit Code: EEEN30171	\n\n\nHSD & MS Design / LECTURE_ /
 
-		// everything from the end of start to the end of the string
-		const k = input.split(start)[1];
+function removeGoogleMapLink(input: string) {
+	const start = "Map link: [Google Maps](";
+	const end = ")	\n";
 
-		if (!k) {
-			console.log(`Failed to find \n\n${start}\n\nin\n\n${input}\n\n`);
-			return input;
-		}
+	const start_index = input.indexOf(start);
 
-		const eI = k.indexOf(end); // horrible horrible hack
+	if (start_index === -1) return input;
 
-		if (sI !== -1 && eI !== -1 && sI < eI) {
-			const rem = input.substring(sI, eI + end.length);
-			return input.replace(rem, "");
-		} else return input;
-	} catch (err) {
-		console.error(err);
-		return input;
-	}
+	const second_part_of_string = input.slice(
+		start_index + start.length,
+		input.length
+	);
+
+	const end_index = second_part_of_string.indexOf(end);
+
+	if (end_index === -1) return input;
+
+	return (
+		input.slice(0, start_index) +
+		second_part_of_string.slice(end_index + end.length)
+	);
+}
+
+function removeLocation(input: string) {
+	const start = "Location: ";
+
+	const end = "\n";
+
+	const start_index = input.indexOf(start);
+
+	if (start_index === -1) return input;
+
+	const second_part_of_string = input.slice(
+		start_index + start.length,
+		input.length
+	);
+
+	const end_index = second_part_of_string.indexOf(end);
+
+	if (end_index === -1) return input;
+
+	return (
+		input.slice(0, start_index) +
+		second_part_of_string.slice(end_index + end.length)
+	);
+}
+
+function removeUnitCode(input: string) {
+	const start = "Unit Code: ";
+
+	const end = "\n";
+
+	const start_index = input.indexOf(start);
+
+	if (start_index === -1) return input;
+
+	const second_part_of_string = input.slice(
+		start_index + start.length,
+		input.length
+	);
+
+	const end_index = second_part_of_string.indexOf(end);
+
+	if (end_index === -1) return input;
+
+	return (
+		input.slice(0, start_index) +
+		second_part_of_string.slice(end_index + end.length)
+	);
+}
+
+function removeDate(input: string) {
+	const start = "Date: ";
+
+	const end = "\n";
+
+	const start_index = input.indexOf(start);
+
+	if (start_index === -1) return input;
+
+	const second_part_of_string = input.slice(
+		start_index + start.length,
+		input.length
+	);
+
+	const end_index = second_part_of_string.indexOf(end);
+
+	if (end_index === -1) return input;
+
+	return (
+		input.slice(0, start_index) +
+		second_part_of_string.slice(end_index + end.length)
+	);
+}
+
+function removeAll(input: string) {
+	return removeUnitCode(removeDate(removeLocation(removeGoogleMapLink(input))));
 }
 
 function prettifyTitle(str: string) {
@@ -112,11 +194,10 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 						start: parseDate(event.start),
 						end: parseDate(event.end),
 						title: prettifyTitle(event.summary),
-						description: `${sliceRemoved(
-							sliceRemoved(event.description, "Map link: ", "\n"),
-							"Date: ",
-							"\n"
-						)}\n${event.summary}`,
+						description: `${removeAll(event.description).trim()}\nSummary: ${
+							// @ts-expect-error
+							event.original_summary
+						}`,
 						location: event.location,
 					};
 				return undefined;
