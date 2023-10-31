@@ -17,19 +17,27 @@ function parseDate(date: Date): DateArray {
 
 function prettifyTitle(str: string) {
 	return str
+		.replaceAll("Lecture1", "Lecture")
 		.replaceAll("LECTURE_2", "Lecture")
 		.replaceAll("LECTURE_SEM1", "Lecture")
 		.replaceAll("LECTURE_SEM2", "Lecture")
 		.replaceAll("LECTURE_", "Lecture")
 		.replaceAll("LABORATORY_", "Lab")
+		.replaceAll("LABORATORY1_", "Lab")
+		.replaceAll("ONLINE_LECTURE_H&S", "Online Lecture")
 		.replaceAll("LABORATORY2_", "Lab")
 		.replaceAll("ONLINE DROP-IN_", "Online Drop-in")
 		.replaceAll("TUTORIAL_", "Tutorial")
+		.replaceAll("Tutorial1", "Tutorial")
+		.replaceAll("Tutorial2", "Tutorial")
+		.replaceAll("Tutorial3", "Tutorial")
 		.replaceAll("TutorialSEM1_AA", "Tutorial")
 		.replaceAll("SURGERY_", "Surgery")
 		.replaceAll("DROP-IN_SEM_1Build", "Drop-in")
 		.replaceAll("INDEPENDENT STUDY_SEM1", "Seminar")
-		.replace(" / ", " - ")
+		.replaceAll("DROP-IN_SEM1_DryLab", "Drop-in")
+		.replaceAll("Lecturereplace2", "Replacement Lecture")
+		.replace(" / ", " ")
 		.split(" / ")[0];
 }
 
@@ -65,8 +73,6 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 			}
 		);
 
-		const checkInLine = "Check-in: https://is.gd/6V1IiF\n\n";
-
 		const ics_events = events
 			.map((event) => {
 				if (event.type === "VEVENT")
@@ -75,7 +81,7 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 						start: parseDate(event.start),
 						end: parseDate(event.end),
 						title: prettifyTitle(event.summary),
-						description: `${checkInLine}${event.description}`,
+						description: `${event.summary}\n\n${event.description}`,
 						location: event.location,
 					};
 				return undefined;
