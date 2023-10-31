@@ -16,13 +16,27 @@ function parseDate(date: Date): DateArray {
 }
 
 function sliceRemoved(input: string, start: string, end: string) {
-	const sI = input.indexOf(start);
-	const eI = input.split("start")[1].indexOf(end); // horrible horrible hack
+	try {
+		const sI = input.indexOf(start);
 
-	if (sI !== -1 && eI !== -1 && sI < eI) {
-		const rem = input.substring(sI, eI + end.length);
-		return input.replace(rem, "");
-	} else return input;
+		// everything from the end of start to the end of the string
+		const k = input.split(start)[1];
+
+		if (!k) {
+			console.log(`Failed to find \n\n${start}\n\nin\n\n${input}\n\n`);
+			return input;
+		}
+
+		const eI = k.indexOf(end); // horrible horrible hack
+
+		if (sI !== -1 && eI !== -1 && sI < eI) {
+			const rem = input.substring(sI, eI + end.length);
+			return input.replace(rem, "");
+		} else return input;
+	} catch (err) {
+		console.error(err);
+		return input;
+	}
 }
 
 function prettifyTitle(str: string) {
@@ -99,7 +113,7 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 						end: parseDate(event.end),
 						title: prettifyTitle(event.summary),
 						description: `${sliceRemoved(
-							sliceRemoved(event.description, "Map Link: ", "\n"),
+							sliceRemoved(event.description, "Map link: ", "\n"),
 							"Date: ",
 							"\n"
 						)}\n${event.summary}`,
