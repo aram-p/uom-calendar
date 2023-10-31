@@ -32,7 +32,7 @@ function prettifyTitle(str: string) {
 		.replaceAll(" LABORATORY5_ ", " Lab ")
 		.replaceAll(" LABORATORY2_ ", " Lab ")
 		.replaceAll(" LECTURE_replace2 ", " Lecture ")
-		.replaceAll(" LECTURE_replacament ", " Lecture ")
+		.replaceAll(" LECTURE_replacement ", " Lecture ")
 		.replaceAll(" ONLINE DROP-IN_ ", " Online Drop-in ")
 		.replaceAll(" TUTORIAL_ ", " Tutorial ")
 		.replaceAll(" TUTORIAL_SEM1_AA ", " Tutorial ")
