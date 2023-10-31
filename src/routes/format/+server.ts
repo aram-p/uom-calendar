@@ -15,6 +15,16 @@ function parseDate(date: Date): DateArray {
 	return [year, month, day, hours, minutes];
 }
 
+function sliceRemoved(input: string, start: string, end: string) {
+	const sI = input.indexOf(start);
+	const eI = input.split("start")[1].indexOf(end); // horrible horrible hack
+
+	if (sI !== -1 && eI !== -1 && sI < eI) {
+		const rem = input.substring(sI, eI + end.length);
+		return input.replace(rem, "");
+	} else return input;
+}
+
 function prettifyTitle(str: string) {
 	return str
 		.replaceAll(" LECTURE_1 ", " Lecture ")
@@ -88,7 +98,11 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 						start: parseDate(event.start),
 						end: parseDate(event.end),
 						title: prettifyTitle(event.summary),
-						description: `${event.description}\n${event.summary}`,
+						description: `${sliceRemoved(
+							sliceRemoved(event.description, "Map Link: ", "\n"),
+							"Date: ",
+							"\n"
+						)}\n${event.summary}`,
 						location: event.location,
 					};
 				return undefined;
