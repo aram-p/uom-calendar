@@ -162,19 +162,19 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 		const events = Object.values(await node_ical.async.fromURL(ical_url)).map(
 			(event) => {
 				if (event.type === "VEVENT") {
-					const course = courses.find(
-						(s) => s.code === event.summary.split("/")[0].trim()
-					);
-					if (course) {
+					const unit = event.description.split("\n").find((line) =>
+						line.includes("Description: ")
+					)?.split("Description: ")[1].trim();
+					if (unit) {
 						const location =
 							typeof event.location === "string"
 								? event.location.replaceAll(`_`, " ")
 								: // .replaceAll(`TH`, `Theatre`)
-								  event.location;
+								event.location;
 						return {
 							...event,
 							summary: [
-								course.name,
+								unit,
 								...event.summary.split("/").splice(1),
 							].join(" / "),
 							location,
@@ -197,7 +197,7 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 						description: `${removeAll(event.description).trim()}\nSummary: ${
 							// @ts-expect-error
 							event.original_summary
-						}`,
+							}`,
 						location: event.location,
 					};
 				return undefined;
@@ -212,6 +212,8 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 			"Content-Disposition": `attachment; filename="calendar.ics"`,
 			"Access-Control-Allow-Origin": "*",
 		});
+
+		console.log(events)
 
 		return new Response(ics);
 	} catch (err) {
