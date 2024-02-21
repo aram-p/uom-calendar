@@ -197,7 +197,7 @@ export const GET: RequestHandler = async ({ url, setHeaders }) => {
 						description: `${removeAll(event.description).trim()}\nSummary: ${
 							// @ts-expect-error
 							event.original_summary
-							}`,
+							}\nCheck in: https://www.studentsupport.manchester.ac.uk/immigration-and-visas/visacheckin/`,
 						location: event.location,
 					};
 				return undefined;
